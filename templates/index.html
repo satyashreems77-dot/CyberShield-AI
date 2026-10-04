@@ -3,148 +3,243 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>CyberShield AI</title>
 
     <style>
-        body {
+        * {
+            box-sizing: border-box;
             margin: 0;
+            padding: 0;
             font-family: Arial, sans-serif;
-            background: #0b1020;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #080b16;
             color: white;
         }
 
-        .container {
-            width: 80%;
-            max-width: 900px;
+        header {
+            padding: 22px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #20263a;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #00e5ff;
+        }
+
+        .status {
+            color: #42ff8a;
+            font-size: 14px;
+        }
+
+        main {
+            width: 90%;
+            max-width: 1000px;
             margin: 60px auto;
+        }
+
+        .hero {
             text-align: center;
-        }
-
-        h1 {
-            font-size: 48px;
-            margin-bottom: 10px;
-        }
-
-        .subtitle {
-            color: #aab3c5;
-            font-size: 18px;
             margin-bottom: 40px;
         }
 
-        .box {
-            background: #151c32;
+        .shield {
+            font-size: 60px;
+        }
+
+        h1 {
+            font-size: 42px;
+            margin: 12px 0;
+        }
+
+        .hero p {
+            color: #9ca6bd;
+            font-size: 17px;
+        }
+
+        .card {
+            background: #111625;
+            border: 1px solid #252d44;
+            border-radius: 18px;
             padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 0 25px rgba(0,0,0,0.4);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.35);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 12px;
+            font-weight: bold;
         }
 
         textarea {
-            width: 90%;
-            height: 180px;
-            padding: 15px;
-            border-radius: 10px;
-            border: none;
-            resize: none;
-            font-size: 16px;
-            background: #0e1426;
+            width: 100%;
+            min-height: 170px;
+            resize: vertical;
+            background: #080b16;
+            border: 1px solid #303951;
+            border-radius: 12px;
+            padding: 16px;
             color: white;
+            font-size: 15px;
+            outline: none;
+        }
+
+        textarea:focus {
+            border-color: #00e5ff;
         }
 
         button {
-            margin-top: 20px;
-            padding: 14px 35px;
+            width: 100%;
+            margin-top: 18px;
+            padding: 15px;
             border: none;
-            border-radius: 8px;
-            background: #ff5c35;
-            color: white;
-            font-size: 17px;
+            border-radius: 10px;
+            background: #00e5ff;
+            color: #061018;
+            font-size: 16px;
             font-weight: bold;
             cursor: pointer;
         }
 
         button:hover {
-            background: #ff744f;
+            opacity: 0.85;
         }
 
-        .result {
-            margin-top: 30px;
+        #result {
+            display: none;
+            margin-top: 25px;
             padding: 20px;
-            background: #0e1426;
-            border-radius: 10px;
+            border-radius: 12px;
+            background: #080b16;
+            border: 1px solid #303951;
         }
 
-        .shield {
-            font-size: 55px;
+        .score {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .reason {
+            color: #aab3c7;
+            margin-top: 8px;
+        }
+
+        footer {
+            text-align: center;
+            color: #69738a;
+            padding: 30px;
+            font-size: 13px;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 32px;
+            }
+
+            .card {
+                padding: 20px;
+            }
         }
     </style>
 </head>
 
 <body>
 
-<div class="container">
+<header>
+    <div class="logo">🛡️ Cyber<span>Shield</span> AI</div>
+    <div class="status">● System Ready</div>
+</header>
 
-    <div class="shield">🛡️</div>
+<main>
 
-    <h1>CyberShield AI</h1>
+    <section class="hero">
+        <div class="shield">🛡️</div>
+        <h1>Your Personal AI Scam Guardian</h1>
+        <p>Analyze suspicious messages and detect potential phishing threats.</p>
+    </section>
 
-    <p class="subtitle">
-        Your Personal AI Scam Guardian
-    </p>
+    <section class="card">
 
-    <div class="box">
+        <label for="message">Paste suspicious message or email</label>
 
-        <h2>🔍 Scan a suspicious message</h2>
+        <textarea id="message"
+            placeholder="Example: Congratulations! You won ₹50,000. Click this link to claim your prize..."></textarea>
 
-        <textarea
-            id="message"
-            placeholder="Paste a suspicious SMS, email, URL or message here...">
-        </textarea>
+        <button onclick="scanMessage()">🔍 Scan for Threats</button>
 
-        <br>
-
-        <button onclick="scanMessage()">
-            🔍 SCAN NOW
-        </button>
-
-        <div id="result" class="result">
-            Your analysis will appear here.
+        <div id="result">
+            <div class="score" id="score"></div>
+            <div id="threat"></div>
+            <div class="reason" id="reason"></div>
         </div>
 
-    </div>
+    </section>
 
-</div>
+</main>
+
+<footer>
+    CyberShield AI • Smart Protection Against Digital Scams
+</footer>
 
 <script>
+    async function scanMessage() {
 
-async function scanMessage() {
+        const message = document.getElementById("message").value;
 
-    const message = document.getElementById("message").value;
+        if (!message.trim()) {
+            alert("Please paste a message first.");
+            return;
+        }
 
-    if (message.trim() === "") {
-        alert("Please enter a message first.");
-        return;
+        const resultBox = document.getElementById("result");
+
+        resultBox.style.display = "block";
+        document.getElementById("score").innerText = "🔄 Analyzing...";
+        document.getElementById("threat").innerText = "";
+        document.getElementById("reason").innerText = "";
+
+        try {
+
+            const response = await fetch("/scan", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    message: message
+                })
+            });
+
+            const data = await response.json();
+
+            document.getElementById("score").innerText =
+                "Risk Score: " + data.score + "/100";
+
+            document.getElementById("threat").innerText =
+                data.threat;
+
+            document.getElementById("reason").innerText =
+                data.reason;
+
+        } catch (error) {
+
+            document.getElementById("score").innerText =
+                "⚠️ Error";
+
+            document.getElementById("reason").innerText =
+                "Unable to connect to CyberShield server.";
+        }
     }
-
-    const response = await fetch("/scan", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            message: message
-        })
-    });
-
-    const data = await response.json();
-
-    document.getElementById("result").innerHTML = `
-        <h2>Risk Score: ${data.score}/100</h2>
-        <h3>${data.threat}</h3>
-        <p>${data.reason}</p>
-    `;
-}
-
 </script>
 
 </body>
