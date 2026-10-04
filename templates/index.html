@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CyberShield AI</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #0b1020;
+            color: white;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 900px;
+            margin: 60px auto;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #aab3c5;
+            font-size: 18px;
+            margin-bottom: 40px;
+        }
+
+        .box {
+            background: #151c32;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 25px rgba(0,0,0,0.4);
+        }
+
+        textarea {
+            width: 90%;
+            height: 180px;
+            padding: 15px;
+            border-radius: 10px;
+            border: none;
+            resize: none;
+            font-size: 16px;
+            background: #0e1426;
+            color: white;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 14px 35px;
+            border: none;
+            border-radius: 8px;
+            background: #ff5c35;
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #ff744f;
+        }
+
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            background: #0e1426;
+            border-radius: 10px;
+        }
+
+        .shield {
+            font-size: 55px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="shield">🛡️</div>
+
+    <h1>CyberShield AI</h1>
+
+    <p class="subtitle">
+        Your Personal AI Scam Guardian
+    </p>
+
+    <div class="box">
+
+        <h2>🔍 Scan a suspicious message</h2>
+
+        <textarea
+            id="message"
+            placeholder="Paste a suspicious SMS, email, URL or message here...">
+        </textarea>
+
+        <br>
+
+        <button onclick="scanMessage()">
+            🔍 SCAN NOW
+        </button>
+
+        <div id="result" class="result">
+            Your analysis will appear here.
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+async function scanMessage() {
+
+    const message = document.getElementById("message").value;
+
+    if (message.trim() === "") {
+        alert("Please enter a message first.");
+        return;
+    }
+
+    const response = await fetch("/scan", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            message: message
+        })
+    });
+
+    const data = await response.json();
+
+    document.getElementById("result").innerHTML = `
+        <h2>Risk Score: ${data.score}/100</h2>
+        <h3>${data.threat}</h3>
+        <p>${data.reason}</p>
+    `;
+}
+
+</script>
+
+</body>
+</html>
