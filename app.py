@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify 
+from detector import analyze_message
 
 app = Flask(__name__)
 
@@ -15,14 +16,17 @@ def scan():
     data = request.get_json()
 
     message = data.get("message", "")
+    result = analyze_message(message)
 
     return jsonify({
 
-        "score": 50,
+        "score": result["score"],
 
-        "threat": "⚠️ ANALYSIS COMPLETE",
+        "threat": result["threat"],
+        "confidence": result["confidence"],
+        "advice": result["advice"],
+        "reason": " ".join(result["reasons"])
 
-        "reason": "CyberShield received your message successfully."
 
     })
 
