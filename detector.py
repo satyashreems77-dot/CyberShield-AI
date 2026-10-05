@@ -67,7 +67,10 @@ def analyze_message(message):
     banking_words = [
         "bank", "upi", "credit card",
         "debit card", "account number",
-        "transaction", "payment"
+        "account no", "account",
+        "transaction", "payment",
+        "credit", "debit", "amount",
+        "rs.", "inr"
     ]
 
     if any(word in text for word in banking_words):

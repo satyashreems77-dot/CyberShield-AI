@@ -151,6 +151,7 @@
             }
         }
     </style>
+ <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>   
 </head>
 
 <body>
@@ -171,10 +172,15 @@
     <section class="card">
 
         <label for="message">Paste suspicious message or email</label>
+        <label for="screenshot">📷 Scan a screenshot</label>
+<input type="file" id="screenshot" accept="image/*" onchange="scanScreenshot()">
 
-        <textarea id="message"
-            placeholder="Example: Congratulations! You won ₹50,000. Click this link to claim your prize..."></textarea>
-
+                <textarea id="message"
+                    placeholder="Example: Congratulations! You won ₹50,000. Click this link to claim your prize..."></textarea>
+        <div style="margin-top: 15px;">
+            <label for="screenshot">📷 Or upload a screenshot</label>
+            <input type="file" id="screenshot" accept="image/*"onchange="scanScreenshot()">
+        </div>
         <button onclick="scanMessage()">🔍 Scan for Threats</button>
 
       <div id="result">
@@ -207,6 +213,29 @@
 </footer>
 
 <script>
+    async function scanScreenshot() {
+    const file = document.getElementById("screenshot").files[0];
+
+    if (!file) {
+        return;
+    }
+
+    document.getElementById("message").value = "🔄 Reading screenshot...";
+
+    try {
+        const result = await Tesseract.recognize(
+            file,
+            "eng"
+        );
+
+        document.getElementById("message").value =
+            result.data.text.trim();
+
+    } catch (error) {
+        document.getElementById("message").value =
+            "⚠️ Could not read the screenshot.";
+    }
+}
     async function scanMessage() {
 
         const message = document.getElementById("message").value;
