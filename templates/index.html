@@ -142,6 +142,8 @@ async function scanMessage() {
         <h2>Risk Score: ${data.score}/100</h2>
         <h3>${data.threat}</h3>
         <p>${data.reason}</p>
+        <p><strong>confidence:</strong> ${data.confidence}</p>
+        <p><strong>advice:</strong> ${data.advice}</p>
     `;
 }
 
