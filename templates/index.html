@@ -223,25 +223,43 @@ async function scanMessage() {
 
         const data = await response.json();
 
-        document.getElementById("result").innerHTML = `
+        const score = Number(data.score);
 
-            <h2>Risk Score: ${data.score}/100</h2>
+let riskLevel;
+let riskEmoji;
 
-            <h3>${data.threat}</h3>
+if (score <= 30) {
+    riskLevel = "LOW RISK";
+    riskEmoji = "🟢";
+} else if (score <= 60) {
+    riskLevel = "MEDIUM RISK";
+    riskEmoji = "🟡";
+} else {
+    riskLevel = "HIGH RISK";
+    riskEmoji = "🔴";
+}
 
-            <p>${data.reason}</p>
+document.getElementById("result").innerHTML = `
 
-            <p>
-                <strong>Confidence:</strong>
-                ${data.confidence}
-            </p>
+    <h2>Risk Score: ${score}/100</h2>
 
-            <p>
-                <strong>Advice:</strong>
-                ${data.advice}
-            </p>
+    <h2>${riskEmoji} ${riskLevel}</h2>
 
-        `;
+    <h3>${data.threat}</h3>
+
+    <p>${data.reason}</p>
+
+    <p>
+        <strong>Confidence:</strong>
+        ${data.confidence}
+    </p>
+
+    <p>
+        <strong>Advice:</strong>
+        ${data.advice}
+    </p>
+
+`;
 
     } catch (error) {
 
