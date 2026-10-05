@@ -152,6 +152,7 @@
         }
     </style>
  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>   
+ <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 </head>
 
 <body>
@@ -172,7 +173,8 @@
     <section class="card">
 
         <label for="message">Paste suspicious message or email</label>
-        <label for="screenshot">📷 Scan a screenshot</label>
+        <label for="qrImage">🔳 Or upload a QR code image</label>
+<input type="file" id="qrImage" accept="image/*" onchange="scanQR()">
 <input type="file" id="screenshot" accept="image/*" onchange="scanScreenshot()">
 
                 <textarea id="message"
@@ -239,6 +241,9 @@
             "⚠️ Could not read the screenshot.";
     }
 }
+
+
+
     async function scanMessage() {
 
         const message = document.getElementById("message").value;
