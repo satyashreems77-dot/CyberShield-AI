@@ -3,373 +3,425 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>CyberShield AI</title>
 
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
+    <!-- QR Scanner Library -->
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 
+    <!-- OCR Library -->
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+
+    <style>
         body {
-            min-height: 100vh;
-            background: #080b16;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #0b1020;
             color: white;
         }
 
-        header {
-            padding: 22px 8%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #20263a;
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-        }
-
-        .logo span {
-            color: #00e5ff;
-        }
-
-        .status {
-            color: #42ff8a;
-            font-size: 14px;
-        }
-
-        main {
-            width: 90%;
-            max-width: 1000px;
+        .container {
+            width: 80%;
+            max-width: 900px;
             margin: 60px auto;
-        }
-
-        .hero {
             text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .shield {
-            font-size: 60px;
         }
 
         h1 {
-            font-size: 42px;
-            margin: 12px 0;
+            font-size: 48px;
+            margin-bottom: 10px;
         }
 
-        .hero p {
-            color: #9ca6bd;
-            font-size: 17px;
+        .subtitle {
+            color: #aab3c5;
+            font-size: 18px;
+            margin-bottom: 40px;
         }
 
-        .card {
-            background: #111625;
-            border: 1px solid #252d44;
-            border-radius: 18px;
+        .box {
+            background: #151c32;
             padding: 30px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.35);
-        }
-
-        label {
-            display: block;
-            margin-bottom: 12px;
-            font-weight: bold;
+            border-radius: 15px;
+            box-shadow: 0 0 25px rgba(0,0,0,0.4);
         }
 
         textarea {
-            width: 100%;
-            min-height: 170px;
-            resize: vertical;
-            background: #080b16;
-            border: 1px solid #303951;
-            border-radius: 12px;
-            padding: 16px;
+            width: 90%;
+            height: 180px;
+            padding: 15px;
+            border-radius: 10px;
+            border: none;
+            resize: none;
+            font-size: 16px;
+            background: #0e1426;
             color: white;
-            font-size: 15px;
-            outline: none;
-        }
-
-        textarea:focus {
-            border-color: #00e5ff;
         }
 
         button {
-            width: 100%;
-            margin-top: 18px;
-            padding: 15px;
+            margin-top: 20px;
+            padding: 14px 35px;
             border: none;
-            border-radius: 10px;
-            background: #00e5ff;
-            color: #061018;
-            font-size: 16px;
+            border-radius: 8px;
+            background: #ff5c35;
+            color: white;
+            font-size: 17px;
             font-weight: bold;
             cursor: pointer;
         }
 
         button:hover {
-            opacity: 0.85;
+            background: #ff744f;
         }
 
-        #result {
-            display: none;
-            margin-top: 25px;
+        .upload-section {
+            margin-top: 30px;
             padding: 20px;
-            border-radius: 12px;
-            background: #080b16;
-            border: 1px solid #303951;
+            background: #0e1426;
+            border-radius: 10px;
         }
 
-        .score {
-            font-size: 32px;
-            font-weight: bold;
-            margin-bottom: 8px;
+        .upload-section h3 {
+            margin-bottom: 15px;
         }
 
-        .reason {
-            color: #aab3c7;
-            margin-top: 8px;
+        input[type="file"] {
+            margin: 10px;
+            padding: 10px;
+            color: white;
         }
 
-        footer {
-            text-align: center;
-            color: #69738a;
-            padding: 30px;
-            font-size: 13px;
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            background: #0e1426;
+            border-radius: 10px;
         }
 
-        @media (max-width: 600px) {
-            h1 {
-                font-size: 32px;
-            }
+        .shield {
+            font-size: 55px;
+        }
 
-            .card {
-                padding: 20px;
-            }
+        hr {
+            border: none;
+            border-top: 1px solid #30384f;
+            margin: 25px 0;
         }
     </style>
- <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>   
- <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 </head>
 
 <body>
 
-<header>
-    <div class="logo">🛡️ Cyber<span>Shield</span> AI</div>
-    <div class="status">● System Ready</div>
-</header>
+<div class="container">
 
-<main>
+    <div class="shield">🛡️</div>
 
-    <section class="hero">
-        <div class="shield">🛡️</div>
-        <h1>Your Personal AI Scam Guardian</h1>
-        <p>Analyze suspicious messages and detect potential phishing threats.</p>
-    </section>
+    <h1>CyberShield AI</h1>
 
-    <section class="card">
+    <p class="subtitle">
+        Your Personal AI Scam Guardian
+    </p>
 
-        <label for="message">Paste suspicious message or email</label>
-        <label for="qrImage">📷 Or upload a QR code</label>
-        <label for="screenshot">📷 Or upload a screenshot</label>
-<input type="file" id="qrImage" accept="image/*" onchange="scanQR()"
-<input type="file" id="screenshot" accept="image/*" onchange="scanUploadedImage(this)">
+    <div class="box">
 
-                <textarea id="message"
-                    placeholder="Example: Congratulations! You won ₹50,000. Click this link to claim your prize..."></textarea>
+        <!-- MESSAGE SCANNER -->
 
-       <button onclick="scanMessage()">
-    🔍 Scan for Threats
-</button>
+        <h2>🔍 Scan a suspicious message</h2>
 
-      <div id="result">
-    <div class="score" id="score"></div>
-    <div style="background:#252d44; border-radius:10px; height:12px; margin:12px 0; overflow:hidden;">
-    <div id="riskBar" style="height:100%; width:0%; background:#00e5ff; transition:width 0.5s;"></div>
+        <textarea
+            id="message"
+            placeholder="Paste a suspicious SMS, email, URL or message here..."></textarea>
+
+        <br>
+
+        <button onclick="scanMessage()">
+            🔍 SCAN NOW
+        </button>
+
+
+        <!-- QR SCANNER -->
+
+        <div class="upload-section">
+
+            <h3>📱 Or scan a QR code</h3>
+
+            <input
+                type="file"
+                id="qrImage"
+                accept="image/*"
+                onchange="scanQR()">
+
+            <p id="qrStatus"></p>
+
+        </div>
+
+
+        <hr>
+
+
+        <!-- SCREENSHOT OCR -->
+
+        <div class="upload-section">
+
+            <h3>📸 Or upload a suspicious screenshot</h3>
+
+            <input
+                type="file"
+                id="screenshot"
+                accept="image/*"
+                onchange="scanScreenshot()">
+
+            <p id="ocrStatus"></p>
+
+        </div>
+
+
+        <!-- RESULT -->
+
+        <div id="result" class="result">
+            Your analysis will appear here.
+        </div>
+
+    </div>
+
 </div>
 
-    <div id="threat"></div>
-
-    <div class="reason">
-        <strong>Why is this suspicious?</strong>
-        <p id="reason"></p>
-    </div>
-
-    <div class="reason">
-        <strong>Confidence:</strong>
-        <span id="confidence"></span>
-    </div>
-
-    <div class="reason">
-        <strong>Safety Advice:</strong>
-        <p id="advice"></p>
-    </div>
-</div>  
-
-    </section>
-
-</main>
-
-<footer>
-    CyberShield AI • Smart Protection Against Digital Scams
-</footer>
 
 <script>
-   async function scanQR() {
-    const file = document.getElementById("qrImage").files[0];
 
-    if (!file) {
+
+// ==========================================
+// NORMAL MESSAGE SCANNER
+// ==========================================
+
+async function scanMessage() {
+
+    const message =
+        document.getElementById("message").value;
+
+    if (message.trim() === "") {
+        alert("Please enter a message first.");
         return;
     }
 
-    const message = document.getElementById("message");
-    message.value = "🔄 Reading QR code...";
+    document.getElementById("result").innerHTML =
+        "<p>🔄 Analyzing...</p>";
 
     try {
-        const image = new Image();
-        const imageURL = URL.createObjectURL(file);
 
-        image.onload = function () {
-            const canvas = document.createElement("canvas");
-            const context = canvas.getContext("2d");
+        const response = await fetch("/scan", {
 
-            canvas.width = image.width;
-            canvas.height = image.height;
+            method: "POST",
 
-            context.drawImage(image, 0, 0);
+            headers: {
+                "Content-Type": "application/json"
+            },
 
-            const imageData = context.getImageData(
-                0,
-                0,
-                canvas.width,
-                canvas.height
-            );
+            body: JSON.stringify({
+                message: message
+            })
+        });
 
-            const code = jsQR(
-                imageData.data,
-                imageData.width,
-                imageData.height
-            );
+        const data = await response.json();
 
-            if (code) {
-                message.value = code.data;
-            } else {
-                message.value = "⚠️ Could not detect a QR code in this image.";
-            }
+        document.getElementById("result").innerHTML = `
 
-            URL.revokeObjectURL(imageURL);
-        };
+            <h2>Risk Score: ${data.score}/100</h2>
 
-        image.onerror = function () {
-            message.value = "⚠️ Could not read the uploaded image.";
-            URL.revokeObjectURL(imageURL);
-        };
+            <h3>${data.threat}</h3>
 
-        image.src = imageURL;
+            <p>${data.reason}</p>
+
+            <p>
+                <strong>Confidence:</strong>
+                ${data.confidence}
+            </p>
+
+            <p>
+                <strong>Advice:</strong>
+                ${data.advice}
+            </p>
+
+        `;
 
     } catch (error) {
+
         console.error(error);
-        message.value = "⚠️ QR code scanning failed.";
+
+        document.getElementById("result").innerHTML =
+            "<p>⚠️ Could not connect to the server.</p>";
     }
 }
-            
-    async function scanScreenshot() {
-    const file = document.getElementById("screenshot").files[0];
+
+
+// ==========================================
+// QR CODE SCANNER
+// ==========================================
+
+function scanQR() {
+
+    const file =
+        document.getElementById("qrImage").files[0];
 
     if (!file) {
         return;
     }
+
+    document.getElementById("qrStatus").innerText =
+        "🔄 Reading QR code...";
+
+
+    const reader = new FileReader();
+
+
+    reader.onload = function(event) {
+
+        const img = new Image();
+
+
+        img.onload = function() {
+
+            const canvas =
+                document.createElement("canvas");
+
+            const context =
+                canvas.getContext("2d");
+
+
+            canvas.width = img.width;
+            canvas.height = img.height;
+
+
+            context.drawImage(
+                img,
+                0,
+                0,
+                img.width,
+                img.height
+            );
+
+
+            const imageData =
+                context.getImageData(
+                    0,
+                    0,
+                    canvas.width,
+                    canvas.height
+                );
+
+
+            const code =
+                jsQR(
+                    imageData.data,
+                    imageData.width,
+                    imageData.height,
+                    {
+                        inversionAttempts: "attemptBoth"
+                    }
+                );
+
+
+            if (code) {
+
+                document.getElementById("message").value =
+                    code.data;
+
+                document.getElementById("qrStatus").innerText =
+                    "✅ QR code detected.";
+
+                // Automatically scan the decoded content
+                scanMessage();
+
+            } else {
+
+                document.getElementById("qrStatus").innerText =
+                    "⚠️ Could not detect a QR code in this image.";
+            }
+
+        };
+
+
+        img.src = event.target.result;
+    };
+
+
+    reader.readAsDataURL(file);
+}
+
+
+// ==========================================
+// SCREENSHOT OCR
+// ==========================================
+
+async function scanScreenshot() {
+
+    const file =
+        document.getElementById("screenshot").files[0];
+
+    if (!file) {
+        return;
+    }
+
+
+    document.getElementById("ocrStatus").innerText =
+        "🔄 Reading screenshot...";
+
 
     document.getElementById("message").value =
         "🔄 Reading screenshot...";
 
-    try {
-        const result = await Tesseract.recognize(
-            file,
-            "eng"
-        );
 
-        document.getElementById("message").value =
+    try {
+
+        const result =
+            await Tesseract.recognize(
+                file,
+                "eng"
+            );
+
+
+        const text =
             result.data.text.trim();
-            await scanMessage();
+
+
+        if (!text) {
+
+            document.getElementById("ocrStatus").innerText =
+                "❌ Could not find readable text.";
+
+            document.getElementById("message").value =
+                "";
+
+            return;
+        }
+
+
+        // Put extracted text into message box
+        document.getElementById("message").value =
+            text;
+
+
+        document.getElementById("ocrStatus").innerText =
+            "✅ Text extracted successfully.";
+
+
+        // Automatically analyze extracted text
+        await scanMessage();
+
 
     } catch (error) {
+
         console.error(error);
 
+
+        document.getElementById("ocrStatus").innerText =
+            "⚠️ Could not read the uploaded image.";
+
         document.getElementById("message").value =
-            "⚠️ Could not read the screenshot.";
+            "";
     }
 }
 
 
-    async function scanMessage() {
-
-        const message = document.getElementById("message").value;
-
-        if (!message.trim()) {
-            alert("Please paste a message first.");
-            return;
-        }
-
-        const resultBox = document.getElementById("result");
-
-        resultBox.style.display = "block";
-        document.getElementById("score").innerText = "🔄 Analyzing...";
-        document.getElementById("threat").innerText = "";
-        document.getElementById("reason").innerText = "";
-
-        try {
-
-            const response = await fetch("/scan", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    message: message
-                })
-            });
-
-            const data = await response.json();
-
-            document.getElementById("score").innerText =
-                "Risk Score: " + data.score + "/100";
-
-            document.getElementById("riskBar").style.width =
-    data.score + "%";
-     if (data.score >= 70) {
-    document.getElementById("riskBar").style.background = "#ff3b30";
-} else if (data.score >= 40) {
-    document.getElementById("riskBar").style.background = "#ff9500";
-} else if (data.score >= 20) {
-    document.getElementById("riskBar").style.background = "#ffd60a";
-} else {
-    document.getElementById("riskBar").style.background = "#34c759";
-}  
-
-            document.getElementById("threat").innerText =
-                data.threat;
-
-            document.getElementById("reason").innerText =
-                data.reason;
-             document.getElementById("confidence").innerText =
-    data.confidence;
-
-document.getElementById("advice").innerText =
-    data.advice;   
-
-        } catch (error) {
-
-            document.getElementById("score").innerText =
-                "⚠️ Error";
-
-            document.getElementById("reason").innerText =
-                "Unable to connect to CyberShield server.";
-        }
-    }
 </script>
 
 </body>
