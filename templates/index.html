@@ -173,17 +173,17 @@
     <section class="card">
 
         <label for="message">Paste suspicious message or email</label>
-        <label for="qrImage">🔳 Or upload a QR code image</label>
-<input type="file" id="qrImage" accept="image/*" onchange="scanQR()">
-<input type="file" id="screenshot" accept="image/*" onchange="scanScreenshot()">
+        <label for="qrImage">📷 Or upload a QR code</label>
+        <label for="screenshot">📷 Or upload a screenshot</label>
+<input type="file" id="qrImage" accept="image/*" onchange="scanQR()"
+<input type="file" id="screenshot" accept="image/*" onchange="scanUploadedImage(this)">
 
                 <textarea id="message"
                     placeholder="Example: Congratulations! You won ₹50,000. Click this link to claim your prize..."></textarea>
-        <div style="margin-top: 15px;">
-            <label for="screenshot">📷 Or upload a screenshot</label>
-            <input type="file" id="screenshot" accept="image/*"onchange="scanScreenshot()">
-        </div>
-        <button onclick="scanMessage()">🔍 Scan for Threats</button>
+
+       <button onclick="scanMessage()">
+    🔍 Scan for Threats
+</button>
 
       <div id="result">
     <div class="score" id="score"></div>
@@ -218,6 +218,64 @@
 </footer>
 
 <script>
+   async function scanQR() {
+    const file = document.getElementById("qrImage").files[0];
+
+    if (!file) {
+        return;
+    }
+
+    const message = document.getElementById("message");
+    message.value = "🔄 Reading QR code...";
+
+    try {
+        const image = new Image();
+        const imageURL = URL.createObjectURL(file);
+
+        image.onload = function () {
+            const canvas = document.createElement("canvas");
+            const context = canvas.getContext("2d");
+
+            canvas.width = image.width;
+            canvas.height = image.height;
+
+            context.drawImage(image, 0, 0);
+
+            const imageData = context.getImageData(
+                0,
+                0,
+                canvas.width,
+                canvas.height
+            );
+
+            const code = jsQR(
+                imageData.data,
+                imageData.width,
+                imageData.height
+            );
+
+            if (code) {
+                message.value = code.data;
+            } else {
+                message.value = "⚠️ Could not detect a QR code in this image.";
+            }
+
+            URL.revokeObjectURL(imageURL);
+        };
+
+        image.onerror = function () {
+            message.value = "⚠️ Could not read the uploaded image.";
+            URL.revokeObjectURL(imageURL);
+        };
+
+        image.src = imageURL;
+
+    } catch (error) {
+        console.error(error);
+        message.value = "⚠️ QR code scanning failed.";
+    }
+}
+            
     async function scanScreenshot() {
     const file = document.getElementById("screenshot").files[0];
 
@@ -225,7 +283,8 @@
         return;
     }
 
-    document.getElementById("message").value = "🔄 Reading screenshot...";
+    document.getElementById("message").value =
+        "🔄 Reading screenshot...";
 
     try {
         const result = await Tesseract.recognize(
@@ -235,13 +294,15 @@
 
         document.getElementById("message").value =
             result.data.text.trim();
+            await scanMessage();
 
     } catch (error) {
+        console.error(error);
+
         document.getElementById("message").value =
             "⚠️ Could not read the screenshot.";
     }
 }
-
 
 
     async function scanMessage() {
