@@ -121,6 +121,15 @@ def analyze_message(message):
         reasons.append(
             "The message asks the user to click a link, increasing the risk of phishing."
         )
+
+    if "password" in text and "account" in text and (
+        "click" in text or "verify" in text
+    ):
+        score += 20
+        reasons.append(
+            "The message combines an account security claim with a password request and verification action."
+        )    
+
     # Maximum score
     score = min(score, 100)
 

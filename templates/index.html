@@ -185,6 +185,9 @@
 
       <div id="result">
     <div class="score" id="score"></div>
+    <div style="background:#252d44; border-radius:10px; height:12px; margin:12px 0; overflow:hidden;">
+    <div id="riskBar" style="height:100%; width:0%; background:#00e5ff; transition:width 0.5s;"></div>
+</div>
 
     <div id="threat"></div>
 
@@ -268,6 +271,18 @@
 
             document.getElementById("score").innerText =
                 "Risk Score: " + data.score + "/100";
+
+            document.getElementById("riskBar").style.width =
+    data.score + "%";
+     if (data.score >= 70) {
+    document.getElementById("riskBar").style.background = "#ff3b30";
+} else if (data.score >= 40) {
+    document.getElementById("riskBar").style.background = "#ff9500";
+} else if (data.score >= 20) {
+    document.getElementById("riskBar").style.background = "#ffd60a";
+} else {
+    document.getElementById("riskBar").style.background = "#34c759";
+}  
 
             document.getElementById("threat").innerText =
                 data.threat;
