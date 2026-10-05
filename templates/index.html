@@ -177,11 +177,26 @@
 
         <button onclick="scanMessage()">🔍 Scan for Threats</button>
 
-        <div id="result">
-            <div class="score" id="score"></div>
-            <div id="threat"></div>
-            <div class="reason" id="reason"></div>
-        </div>
+      <div id="result">
+    <div class="score" id="score"></div>
+
+    <div id="threat"></div>
+
+    <div class="reason">
+        <strong>Why is this suspicious?</strong>
+        <p id="reason"></p>
+    </div>
+
+    <div class="reason">
+        <strong>Confidence:</strong>
+        <span id="confidence"></span>
+    </div>
+
+    <div class="reason">
+        <strong>Safety Advice:</strong>
+        <p id="advice"></p>
+    </div>
+</div>  
 
     </section>
 
@@ -230,6 +245,11 @@
 
             document.getElementById("reason").innerText =
                 data.reason;
+             document.getElementById("confidence").innerText =
+    data.confidence;
+
+document.getElementById("advice").innerText =
+    data.advice;   
 
         } catch (error) {
 
