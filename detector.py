@@ -58,7 +58,7 @@ def analyze_message(message):
 
     # 4. Suspicious link
     if re.search(r"https?://|www\.", text):
-        score += 20
+        
         reasons.append(
             "The message contains a web link. Verify the website before opening it."
         )
@@ -88,7 +88,36 @@ def analyze_message(message):
         reasons.append(
             "The message contains an unusually attractive or time-limited offer."
         )
+    # 7. Combination risk signals
+    if any(word in text for word in banking_words) and re.search(r"https?://|www\.", text):
+        score += 15
+        reasons.append(
+        "The message combines financial information with a web link, which can indicate a phishing attempt."
+    )
 
+    if any(word in text for word in sensitive_words) and any(word in text for word in urgent_words):
+        score += 15
+        reasons.append(
+            "The message combines a sensitive information request with urgency, which is a strong phishing signal."
+        )
+
+    if any(word in text for word in prize_words) and re.search(r"https?://|www\.", text):
+        score += 15
+        reasons.append(
+            "A prize or reward claim combined with a web link is a common scam pattern."
+        )
+
+    if any(word in text for word in banking_words) and any(word in text for word in sensitive_words):
+        score += 15
+        reasons.append(
+            "The message combines financial information with a request for sensitive credentials."
+        )
+
+    if "click" in text and re.search(r"https?://|www\.", text):
+        score += 10
+        reasons.append(
+            "The message asks the user to click a link, increasing the risk of phishing."
+        )
     # Maximum score
     score = min(score, 100)
 
