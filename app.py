@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify 
 from detector import analyze_message
+from url_checker import check_url
 
 app = Flask(__name__)
 
@@ -28,6 +29,19 @@ def scan():
         "reason": " ".join(result["reasons"])
 
 
+    })
+
+@app.route("/check-url", methods=["POST"])
+def check_url_route():
+    data = request.get_json()
+
+    url = data.get("url", "")
+
+    result = check_url(url)
+
+    return jsonify({
+        "score": result["score"],
+        "warnings": result["warnings"]
     })
 
 

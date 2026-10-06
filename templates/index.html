@@ -174,7 +174,29 @@
 
         </div>
 
+<!-- URL CHECKER -->
 
+<hr>
+
+<div class="upload-section">
+
+    <h3>🔗 Check a suspicious URL</h3>
+
+    <input
+        type="text"
+        id="urlInput"
+        placeholder="Paste a suspicious website URL here..."
+    >
+
+    <br><br>
+
+    <button onclick="checkURL()">
+        🔍 Check URL
+    </button>
+
+    <p id="urlStatus"></p>
+
+</div>
         <!-- RESULT -->
 
         <div id="result" class="result">
@@ -335,6 +357,48 @@ document.getElementById("result").innerHTML = `
     }
 }
 
+// =========================================
+// URL CHECKER
+// =========================================
+
+async function checkURL() {
+
+    const url = document.getElementById("urlInput").value.trim();
+    const status = document.getElementById("urlStatus");
+
+    if (!url) {
+        status.innerText = "⚠️ Please enter a URL.";
+        return;
+    }
+
+    status.innerText = "🔍 Checking URL...";
+
+    try {
+
+        const response = await fetch("/check-url", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                url: url
+            })
+        });
+
+        const data = await response.json();
+
+        status.innerText =
+            "🛡️ Risk Score: " + data.score + "/100\n" +
+            data.warnings.join("\n");
+
+    } catch (error) {
+
+        console.error(error);
+
+        status.innerText =
+            "⚠️ Could not connect to the server.";
+    }
+}
 
 // ==========================================
 // QR CODE SCANNER
