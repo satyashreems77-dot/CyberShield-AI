@@ -182,9 +182,11 @@
         </div>
 
         <div id="history" class="result">
-          <h2>📜 Scan History</h2>
-          <p>No scans yet.</p>
-       </div>
+    <h2>📜 Scan History</h2>
+    <p>No scans yet.</p>
+</div>
+
+<button onclick="clearScanHistory()">🗑️ Clear History</button>
 
     </div>
 
@@ -234,6 +236,12 @@ function displayScanHistory() {
 }
 
 displayScanHistory();
+
+function clearScanHistory() {
+    scanHistory = [];
+    localStorage.removeItem("cybershieldHistory");
+    displayScanHistory();
+}
 
 
 // ==========================================
