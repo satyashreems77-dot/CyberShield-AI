@@ -181,12 +181,59 @@
             Your analysis will appear here.
         </div>
 
+        <div id="history" class="result">
+          <h2>📜 Scan History</h2>
+          <p>No scans yet.</p>
+       </div>
+
     </div>
 
 </div>
 
 
 <script>
+
+let scanHistory = JSON.parse(localStorage.getItem("cybershieldHistory")) || [];
+
+function displayScanHistory() {
+
+    const historyBox = document.getElementById("history");
+
+    if (scanHistory.length === 0) {
+        historyBox.innerHTML = `
+            <h2>📜 Scan History</h2>
+            <p>No scans yet.</p>
+        `;
+        return;
+    }
+
+    historyBox.innerHTML = `
+        <h2>📜 Scan History</h2>
+
+        ${scanHistory.map((scan, index) => `
+            <div style="
+                background: #151c32;
+                padding: 15px;
+                margin-top: 12px;
+                border-radius: 8px;
+                text-align: left;
+            ">
+                <strong>Scan ${index + 1}</strong>
+                <p>${scan.message}</p>
+                <p>
+                    <strong>Risk Score:</strong>
+                    ${scan.score}/100
+                </p>
+                <p>
+                    <strong>Risk Level:</strong>
+                    ${scan.riskLevel}
+                </p>
+            </div>
+        `).join("")}
+    `;
+}
+
+displayScanHistory();
 
 
 // ==========================================
@@ -238,6 +285,16 @@ if (score <= 30) {
     riskLevel = "HIGH RISK";
     riskEmoji = "🔴";
 }
+
+scanHistory.unshift({
+    message: message.substring(0, 100),
+    score: score,
+    riskLevel: `${riskEmoji} ${riskLevel}`
+});
+
+localStorage.setItem("cybershieldHistory", JSON.stringify(scanHistory));
+
+displayScanHistory();
 
 document.getElementById("result").innerHTML = `
 
