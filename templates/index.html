@@ -197,7 +197,24 @@
     <p id="urlStatus"></p>
 
 </div>
-        <!-- RESULT -->
+<!-- STATISTICS DASHBOARD -->
+
+<div id="statistics" class="result">
+
+    <h2>📊 CyberShield Statistics</h2>
+
+    <p><strong>Total Scans:</strong> <span id="totalScans">0</span></p>
+
+    <p><strong>🔴 High Risk:</strong> <span id="highRiskScans">0</span></p>
+
+    <p><strong>🟡 Medium Risk:</strong> <span id="mediumRiskScans">0</span></p>
+
+    <p><strong>🟢 Low Risk:</strong> <span id="lowRiskScans">0</span></p>
+
+    <p><strong>📈 Average Risk Score:</strong> <span id="averageScore">0</span>/100</p>
+
+</div>    
+<!-- RESULT -->
 
         <div id="result" class="result">
             Your analysis will appear here.
@@ -258,6 +275,7 @@ function displayScanHistory() {
 }
 
 displayScanHistory();
+updateStatistics();
 
 function clearScanHistory() {
     scanHistory = [];
@@ -265,6 +283,44 @@ function clearScanHistory() {
     displayScanHistory();
 }
 
+// =========================================
+// STATISTICS DASHBOARD
+// =========================================
+
+function updateStatistics() {
+
+    const totalScans = scanHistory.length;
+
+    let highRisk = 0;
+    let mediumRisk = 0;
+    let lowRisk = 0;
+    let totalScore = 0;
+
+    scanHistory.forEach(scan => {
+
+        totalScore += Number(scan.score);
+
+        if (scan.riskLevel.includes("HIGH")) {
+            highRisk++;
+        } else if (scan.riskLevel.includes("MEDIUM")) {
+            mediumRisk++;
+        } else {
+            lowRisk++;
+        }
+
+    });
+
+    const averageScore =
+        totalScans > 0
+            ? Math.round(totalScore / totalScans)
+            : 0;
+
+    document.getElementById("totalScans").innerText = totalScans;
+    document.getElementById("highRiskScans").innerText = highRisk;
+    document.getElementById("mediumRiskScans").innerText = mediumRisk;
+    document.getElementById("lowRiskScans").innerText = lowRisk;
+    document.getElementById("averageScore").innerText = averageScore;
+}
 
 // ==========================================
 // NORMAL MESSAGE SCANNER
@@ -325,6 +381,7 @@ scanHistory.unshift({
 localStorage.setItem("cybershieldHistory", JSON.stringify(scanHistory));
 
 displayScanHistory();
+updateStatistics();
 
 document.getElementById("result").innerHTML = `
 
